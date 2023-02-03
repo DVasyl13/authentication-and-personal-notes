@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Notes Page</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <style>
+    h1 {
+      color: green;
+    }
+    p {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 class="text-center">Welcome to my website!</h1>
+</div>
+<div class="container mt-5">
+  <h2>My Notes <span class="badge badge-secondary">New</span></h2>
+  <textarea id="note-text" class="form-control" rows="2"></textarea><br>
+  <button id="submit-button" class="btn btn-primary">Submit</button>
+  <div id="notes-container"></div>
+</div>
+
+<script>
+  // Get the textarea element
+  var textarea = document.getElementById("note-text");
+
+  // Get the container for the notes
+  var notesContainer = document.getElementById("notes-container");
+
+  // Get the submit button
+  var submitButton = document.getElementById("submit-button");
+
+  // Function to submit a note
+  function submitNote() {
+    // Get the text from the textarea
+    var text = textarea.value;
+
+    // Create a new note element
+    var note = document.createElement("div");
+    note.className = "alert alert-primary mt-3";
+    note.innerHTML = text;
+
+    // Add the note to the notes container
+    notesContainer.appendChild(note);
+
+    // Clear the textarea
+    textarea.value = "";
+  }
+
+  // Attach the submitNote function to the submit button's click event
+  submitButton.addEventListener("click", submitNote);
+</script>
+</body>
+</html>
