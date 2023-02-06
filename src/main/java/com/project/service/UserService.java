@@ -3,15 +3,8 @@ package com.project.service;
 import com.project.entity.User;
 import com.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,37 +13,30 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
+    private User currentUser;
+
+    public boolean isAuthorized() {
+        return currentUser != null;
+    }
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
+
     public boolean isExist(String username, String password) {
-        var currentUser = userRepository.findUserByUserNameAndPassword(username,password);
+        var currentUser = userRepository.findUserByUserNameAndPasswordFetchNotes(username,password);
         setCurrentUser(currentUser);
         return Optional.ofNullable(currentUser)
                .isPresent();
     }
 
     public boolean ifValidSave(String email, String username, String password) {
-        if (userRepository.findUsersByEmailOrUserName(email, username).isEmpty()) {
-            userRepository.save(new User(username, password, email));
+        if (userRepository.findUsersByEmailOrUserNameFetchNotes(email, username).isEmpty()) {
+            var currentUser = userRepository.save(new User(username, password, email));
+            setCurrentUser(currentUser);
             return true;
         }
         return false;
-    }
-
-    public User getCurrentUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof User) {
-            return (User) principal;
-        }
-        return null;
-    }
-
-    public void setCurrentUser(User user) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        // Add the appropriate authorities for the user to the list
-        // For example:
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     public User getUserById(Long id) {

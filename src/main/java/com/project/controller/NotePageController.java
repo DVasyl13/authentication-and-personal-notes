@@ -14,7 +14,9 @@ public class NotePageController {
 
     @GetMapping("/main")
     private String mainPage() {
-        System.out.println(userService.getCurrentUser());
+        if (!userService.isAuthorized()) {
+            return "redirect:login";
+        }
         return "main";
     }
 
