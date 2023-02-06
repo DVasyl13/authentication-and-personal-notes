@@ -1,0 +1,72 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<style>
+    .error {
+        background-color: #ff00001a;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Registration</h3>
+                </div>
+                <div class="card-body">
+                    <form action="/signup" method="post" onsubmit="return validateForm()">
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="text" class="form-control" id="email" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" class="form-control" id="username" name="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                        </div>
+                        <input type="submit" value="Sign Up" class="btn btn-success btn-block">
+                    </form>
+                    <form action="/login" method="get">
+                        <input type="submit" value="Log In" class="btn btn-success btn-block">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateForm() {
+        let username = document.getElementById("username").value;
+        let password = document.getElementById("password").value;
+        let email = document.getElementById("email").value;
+
+        let isValid = true;
+
+        if (!username) {
+            document.getElementById("username").classList.add("error");
+            isValid = false;
+        } else {
+            document.getElementById("username").classList.remove("error");
+        }
+
+        if (!password) {
+            document.getElementById("password").classList.add("error");
+            isValid = false;
+        } else {
+            document.getElementById("password").classList.remove("error");
+        }
+
+        if (!email) {
+            document.getElementById("email").classList.add("error");
+            isValid = false;
+        } else {
+            document.getElementById("email").classList.remove("error");
+        }
+
+        return isValid;
+    }
+</script>

@@ -1,33 +1,33 @@
-package com.project.controller;
+package com.project.controller.api;
 
 import com.project.entity.User;
-import com.project.service.UserService;
+import com.project.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UsersController {
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @GetMapping()
     public List<User> getAll() {
-        return userService.getAllUsers();
+        return userRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public User getById(@PathVariable Long id) {
-        return userService.getUserById(id);
+    public Optional<User> getById(@PathVariable Long id) {
+        return userRepository.findById(id);
     }
 
     @DeleteMapping("/{id}")
     public HttpServletResponse removeById(@PathVariable Long id, HttpServletResponse response) {
-       userService.removeUserById(id);
+        userRepository.deleteById(id);
        return response;
     }
-
 }

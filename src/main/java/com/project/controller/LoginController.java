@@ -13,22 +13,15 @@ public class LoginController {
 
     @GetMapping
     public String login() {
-        return "loginpage";
+        return "login";
     }
 
     @PostMapping
     public String verifyUser(@RequestParam("username") String username,
                            @RequestParam("password") String password) {
-        System.out.println(username + " " + password);
-        // Your authentication logic here
-        // ...
-
-        // Redirect to another page or return a response
-        return "redirect:/login/main";
-    }
-
-    @GetMapping("/main")
-    private String mainPage() {
-        return "mainpage";
+        if (userService.isExist(username, password)) {
+            return "redirect:/main";
+        }
+        return "redirect:/login";
     }
 }
