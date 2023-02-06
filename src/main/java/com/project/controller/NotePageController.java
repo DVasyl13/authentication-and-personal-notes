@@ -1,24 +1,24 @@
 package com.project.controller;
 
+import com.project.entity.User;
 import com.project.service.NoteService;
 import com.project.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/main")
 @RequiredArgsConstructor
 public class NotePageController {
-    private final UserService userService;
     private final NoteService noteService;
+    private final UserService userService;
 
     @GetMapping
-    private String mainPage(Model model) {
+    public String load(Model model) {
         if (!userService.isAuthorized()) {
             return "redirect:login";
         }
@@ -26,9 +26,10 @@ public class NotePageController {
         return "main";
     }
 
+    @Transactional
     @PostMapping
     public String saveNote(@RequestParam("text") String text) {
-        noteService.save(text);
+        noteService.save(userService.getCurrentUser(), text);
         return "redirect:main";
     }
 }

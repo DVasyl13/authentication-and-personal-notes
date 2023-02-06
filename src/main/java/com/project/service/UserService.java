@@ -2,17 +2,18 @@ package com.project.service;
 
 import com.project.entity.User;
 import com.project.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
+
 @Service
-@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
 
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
     private User currentUser;
 
     public boolean isAuthorized() {
@@ -31,7 +32,7 @@ public class UserService {
         var currentUser = userRepository.findUserByUserNameAndPasswordFetchNotes(username,password);
         setCurrentUser(currentUser);
         return Optional.ofNullable(currentUser)
-               .isPresent();
+                .isPresent();
     }
 
     public boolean ifValidSave(String email, String username, String password) {
@@ -42,18 +43,4 @@ public class UserService {
         }
         return false;
     }
-
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow();
-    }
-
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public void removeUserById(Long id) {
-        userRepository.deleteById(id);
-    }
-
 }
