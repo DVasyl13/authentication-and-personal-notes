@@ -14,7 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Note {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "body")
@@ -24,4 +24,9 @@ public class Note {
     @JsonBackReference
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Note(String body, User user) {
+        this.body = body;
+        this.user = user;
+    }
 }

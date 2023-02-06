@@ -17,10 +17,18 @@
   <h1 class="text-center">Welcome to my website!</h1>
 </div>
 <div class="container mt-5">
-  <h2>My Notes <span class="badge badge-secondary">New</span></h2>
-  <textarea id="note-text" class="form-control" rows="2"></textarea><br>
-  <button id="submit-button" class="btn btn-primary">Submit</button>
-  <div id="notes-container"></div>
+  <h2>My Notes </h2>
+  <form action="/main" method="post">
+    <textarea id="note-text" class="form-control" rows="2" name="text"></textarea><br>
+    <input type="submit" class="btn btn-primary" value="Submit">
+  </form>
+  <div id="notes-container">
+    <div th:each="note : ${notes}">
+      <div class="alert alert-primary mt-3">
+        <p th:text="${note.body}"></p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>

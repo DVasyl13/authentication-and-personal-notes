@@ -19,6 +19,10 @@ public class UserService {
         return currentUser != null;
     }
 
+    public User getCurrentUser() {
+        return this.currentUser;
+    }
+
     public void setCurrentUser(User user) {
         this.currentUser = user;
     }
